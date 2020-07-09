@@ -3,16 +3,25 @@ const puppeteer = require('puppeteer');
 USERNAME = process.env.ROAM_USERNAME;
 PASSWORD = process.env.ROAM_PASSWORD;
 
-URL = process.env.ROAM_URL; // 'https://roamresearch.com/#/app/database';
+URL = 'https://roamresearch.com/#/app/' + process.env.ROAM_DATABASE; 
 
 (async () => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: [
+      // Required for Docker version of Puppeteer
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      // This will write shared memory files into /tmp instead of /dev/shm,
+      // because Docker’s default for /dev/shm is 64MB
+      '--disable-dev-shm-usage'
+    ],
+  });
   const page = await browser.newPage();
 
-	const client = await page.target().createCDPSession();
-await client.send('Page.setDownloadBehavior', {
-  behavior: 'allow', downloadPath: './downloads/'
-});
+  const client = await page.target().createCDPSession();
+  await client.send('Page.setDownloadBehavior', {
+    behavior: 'allow', downloadPath: './downloads/'
+  });
   await page.goto(URL);
 
   
