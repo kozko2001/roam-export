@@ -12,7 +12,7 @@ steps:
     ROAM_DATABASE:
       from_secret: ROAM_DATABASE
   commands:
-  - node index.js
+  - node export/index.js
   - ls *.zip
     #- name: build-hugo
     #  image: klakegg/hugo:alpine
