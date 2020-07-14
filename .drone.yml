@@ -13,44 +13,15 @@ steps:
       from_secret: ROAM_DATABASE
   commands:
   - node export/index.js
-  - ls *.zip
-    #- name: build-hugo
-    #  image: klakegg/hugo:alpine
-    #  environment:
-    #    HUGO_DESTINATION: /drone/src/public
-    #  commands:
-    #  - hugo
-    #  - find public/
-    #- name: clean
-    #  image: docker:dind
-    #  privileged: true
-    #  volumes:
-    #  - name: dockersock
-    #    path: /var/run/docker.sock
-    #  commands:
-    #  - docker system prune -f
-    #  - docker rm -f blog-static || true
-    #  - docker rmi -f blog-static
-    #
-    #- name: build
-    #  image: docker:dind
-    #  privileged: true
-    #  volumes:
-    #  - name: dockersock
-    #    path: /var/run/docker.sock
-    #  commands:
-    #  - docker build . --tag blog-static --force-rm
-    #- name: deploy
-    #  image: docker:dind
-    #  privileged: true
-    #  volumes:
-    #  - name: dockersock
-    #    path: /var/run/docker.sock
-    #  commands:
-    #  - docker run --name blog-static -e VIRTUAL_HOST="blog.allocsoc.net,*.coscolla.net,allocsoc.net,coscolla.net"   -e VIRTUAL_PORT=2369   -e LETSENCRYPT_HOST=blog.allocsoc.net,coscolla.net,allocsoc.net,coscolla.net   -e LETSENCRYPT_EMAIL=kozko2001@gmail.com --restart=always   --network nginx-bridge   -d blog-static
-    ##
-    #volumes:
-    #- name: dockersock
-    #  host:
-    #    path: /var/run/docker.sock
-    #
+
+- name: transform
+  image: python:3.8-alpine
+  commands:
+  - mkdir zip
+  - mkdir posts
+  - cp *.zip ./zip
+  - cd ./zip;
+  - unzip *.zip;
+  - pwd
+  - find . -name Weig\*.md -exec python3 ../transform/blog.py -i {} > /tmp/test.md \; -exec cp /tmp/test.md ../posts/{} \;
+
