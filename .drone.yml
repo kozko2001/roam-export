@@ -31,7 +31,7 @@ steps:
   - ls posts/*
   - git clone https://github.com/kozko2001/blog-hugo.git blog/
   - cp posts/* blog/content/posts/
-  - mv . /tmp
+  - mv -r . /tmp/
   - shopt -s dotglob; mv /tmp/blog/* .
   - git add .
   - git status
