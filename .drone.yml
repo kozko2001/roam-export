@@ -31,7 +31,9 @@ steps:
   - ls posts/*
   - git clone https://github.com/kozko2001/blog-hugo.git blog/
   - cp posts/* blog/content/posts/
-  - git -C blog/ add .
-  - git -C blog/ status
-  - git -C blog/ commit -m "add content from roam-export"
-  - git -C blog/ push
+  - mv . /tmp
+  - shopt -s dotglob; mv /tmp/blog/* .
+  - git add .
+  - git status
+  - git commit -m "add content from roam-export"
+  - git push
