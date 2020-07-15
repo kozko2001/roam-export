@@ -24,10 +24,11 @@ steps:
   - unzip *.zip;
   - pwd
   - find . -name \*.md -exec python3 ../transform/blog.py -i {} > /tmp/test.md \; -exec cp /tmp/test.md ../posts/{} \;
-  - ls posts/*
+  - ls ../posts/*
 - name: blog
   image: alpine/git
   commands:
+  - ls posts/*
   - git clone https://github.com/kozko2001/blog-hugo.git blog/
   - cp posts/* blog/content/posts/
   - git -C blog/ add .
