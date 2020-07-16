@@ -26,17 +26,22 @@ steps:
   - find . -name \*.md -exec python3 ../transform/blog.py -i {} > /tmp/test.md \; -exec cp /tmp/test.md ../posts/{} \;
   - ls ../posts/*
 - name: blog
-  image: alpine/git
+  image: bitnami/git
   environment:
     SSH_KEY:
       from_secret: ssh-key
-    GIT_SSH_COMMAND: ssh -i key -v
+    GIT_SSH_COMMAND: ssh -i /drone/src/key -v
   commands:
   - echo "$SSH_KEY" > key
   - ls -la *
   - chmod 600 key
   - ls posts/*
-  - git clone git@github.com:kozko2001/blog-hugo.git
+  - mkdir ~/.ssh
+  - ssh-keyscan github.com >> ~/.ssh/known_hosts
+  - rm -rf blog/
+  - git clone git@github.com:kozko2001/blog-hugo.git blog/
+  - git config --global user.email "you@example.com"
+  - git config --global user.name "Your Name"
   - cp posts/* blog/content/posts/
   - git -C blog/ add .
   - git -C blog/ status
