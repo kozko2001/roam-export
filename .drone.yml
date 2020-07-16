@@ -27,13 +27,18 @@ steps:
   - ls ../posts/*
 - name: blog
   image: alpine/git
+  environment:
+    SSH_KEY:
+      from_secret: ssh-key
+    GIT_SSH_COMMAND: ssh -i key -v
   commands:
+  - echo "$SSH_KEY" > key
+  - ls -la *
+  - chmod 600 key
   - ls posts/*
-  - git clone https://github.com/kozko2001/blog-hugo.git blog/
+  - git clone git@github.com:kozko2001/blog-hugo.git
   - cp posts/* blog/content/posts/
-  - mv -r . /tmp/
-  - shopt -s dotglob; mv /tmp/blog/* .
-  - git add .
-  - git status
-  - git commit -m "add content from roam-export"
-  - git push
+  - git -C blog/ add .
+  - git -C blog/ status
+  - git -C blog/ commit -m "add content from roam-export"
+  - git -C blog/ push
