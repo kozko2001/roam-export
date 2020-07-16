@@ -23,7 +23,7 @@ steps:
   - cd ./zip;
   - unzip *.zip;
   - pwd
-  - find . -name \*.md -exec python3 ../transform/blog.py -i {} > /tmp/test.md \; -exec cp /tmp/test.md ../posts/{} \;
+  - find . -name \*.md -exec python3 ../transform/blog.py -i {} -o ../posts/ \;
   - ls ../posts/*
 - name: blog
   image: bitnami/git

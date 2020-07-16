@@ -1,5 +1,6 @@
 import argparse
 import re
+import os
 
 METADATA_RE = re.compile("""-\W+(reference|metadata)(.*?)\n(?P<metadata>.*?)\n-""", re.DOTALL)
 ATTRIBUTES_RE = re.compile("""\W+([A-z]+?)::\W+(.*)\W*""")
@@ -41,10 +42,18 @@ def removeOneLevel(markdown):
     return "\n".join(lines)
 
 
+def getOutputFile(args):
+    infile = args.infile.name
+    outfolder = args.outfolder
+
+    return os.path.join(outfolder, os.path.basename(infile))
+
 def main():
     parser = argparse.ArgumentParser(description="from roam to hugo")
     parser.add_argument("-i", dest="infile", required=True, 
                         type=argparse.FileType('r', encoding='UTF-8'))
+    parser.add_argument("-o", dest="outfolder", required=True, type=str)
+
     args = parser.parse_args()
 
     ## Read Markdown
@@ -64,8 +73,9 @@ title: {blog}
 ---
 """ + markdown_no_metadata
 
-    print(markdown)
 
+    with open(getOutputFile(args), "w") as f:
+        f.write(markdown)
 
 if __name__ == "__main__":
     main()
