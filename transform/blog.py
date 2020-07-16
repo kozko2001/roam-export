@@ -32,8 +32,9 @@ def getBlogAttributes(metadata):
     attributes = getAttributes(metadata)
 
     blog = attributes["blog"]
+    date = attributes["date"] if "date" in attributes else None
 
-    return blog
+    return blog, date
 
 def removeOneLevel(markdown):
     lines = markdown.split("\n")
@@ -60,7 +61,7 @@ def main():
     markdown = read(args)
 
     metadata = getMetadata(markdown)
-    blog = getBlogAttributes(metadata)
+    blog, date = getBlogAttributes(metadata)
 
 
     markdown_no_metadata = "-" + METADATA_RE.sub("", markdown)
@@ -70,6 +71,7 @@ def main():
     markdown = f"""
 ---
 title: {blog}
+date: {date}
 ---
 """ + markdown_no_metadata
 
