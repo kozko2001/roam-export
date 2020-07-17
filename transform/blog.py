@@ -4,7 +4,8 @@ import os
 
 METADATA_RE = re.compile("""-\W+(reference|metadata)(.*?)\n(?P<metadata>.*?)\n-""", re.DOTALL)
 ATTRIBUTES_RE = re.compile("""\W+([A-z]+?)::\W+(.*)\W*""")
-REMOVE_FIRST_LEVEL_RE = re.compile("""^-\W+""")
+REMOVE_FIRST_LEVEL_RE = re.compile("""^-\s+""")
+REPLACE_TWO_SPACES= re.compile("""^\s{4}""")
 
 def read(args):
     markdown = args.infile.read()
@@ -39,6 +40,7 @@ def getBlogAttributes(metadata):
 def removeOneLevel(markdown):
     lines = markdown.split("\n")
     lines = [REMOVE_FIRST_LEVEL_RE.sub("\n\n", line) for line in lines]
+    lines = [REPLACE_TWO_SPACES.sub("  ", line) for line in lines]
 
     return "\n".join(lines)
 
