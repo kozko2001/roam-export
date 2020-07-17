@@ -23,6 +23,7 @@ steps:
   - cd ./zip;
   - unzip *.zip;
   - pwd
+  - pip3 install -r ../transform/requirements.txt
   - find . -name \*.md -exec python3 ../transform/blog.py -i {} -o ../posts/ \;
   - ls ../posts/*
 - name: blog

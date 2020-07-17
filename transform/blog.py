@@ -1,9 +1,10 @@
 import argparse
 import re
 import os
+import dateutil.parser as parser
 
 METADATA_RE = re.compile("""-\W+(reference|metadata)(.*?)\n(?P<metadata>.*?)\n-""", re.DOTALL)
-ATTRIBUTES_RE = re.compile("""\W+([A-z]+?)::\W+(.*)\W*""")
+ATTRIBUTES_RE = re.compile("""\W+([A-z]+?)::\s+(.*)\s*""")
 REMOVE_FIRST_LEVEL_RE = re.compile("""^-\s+""")
 REPLACE_TWO_SPACES= re.compile("""^\s{4}""")
 
@@ -34,6 +35,13 @@ def getBlogAttributes(metadata):
 
     blog = attributes["blog"]
     date = attributes["date"] if "date" in attributes else None
+
+    if date: 
+        date = date.replace("[", "").replace("]", "")
+        d = parser.parse(date)
+
+        if d:
+            date = d
 
     return blog, date
 
