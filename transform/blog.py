@@ -7,6 +7,8 @@ METADATA_RE = re.compile("""-\W+(reference|metadata)(.*?)\n(?P<metadata>.*?)\n-"
 ATTRIBUTES_RE = re.compile("""\W+([A-z]+?)::\s+(.*)\s*""")
 REMOVE_FIRST_LEVEL_RE = re.compile("""^-\s+""")
 REPLACE_TWO_SPACES= re.compile("""^\s{4}""")
+TODO_RE = re.compile("""{{\[\[TODO\]\]}}""")
+DONE_RE = re.compile("""{{\[\[DONE\]\]}}""")
 
 def read(args):
     markdown = args.infile.read()
@@ -52,6 +54,13 @@ def removeOneLevel(markdown):
 
     return "\n".join(lines)
 
+def transformTodos(markdown):
+    lines = markdown.split("\n")
+    
+    lines = [TODO_RE.sub("[ ]", line) for line in lines]
+    lines = [DONE_RE.sub("[x]", line) for line in lines]
+
+    return "\n".join(lines)
 
 def getOutputFile(args):
     infile = args.infile.name
@@ -76,6 +85,7 @@ def main():
 
     markdown_no_metadata = "-" + METADATA_RE.sub("", markdown)
     markdown_no_metadata = removeOneLevel(markdown_no_metadata)
+    markdown_no_metadata = transformTodos(markdown_no_metadata)
 
     
     markdown = f"""
