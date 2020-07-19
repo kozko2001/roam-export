@@ -7,8 +7,8 @@ METADATA_RE = re.compile("""-\W+(reference|metadata)(.*?)\n(?P<metadata>.*?)\n-"
 ATTRIBUTES_RE = re.compile("""\W+([A-z]+?)::\s+(.*)\s*""")
 REMOVE_FIRST_LEVEL_RE = re.compile("""^-\s+""")
 REPLACE_TWO_SPACES= re.compile("""^\s{4}""")
-TODO_RE = re.compile("""(- )?{{\[\[TODO\]\]}}""")
-DONE_RE = re.compile("""(- )?{{\[\[DONE\]\]}}""")
+TODO_RE = re.compile("""{{\[\[TODO\]\]}}""")
+DONE_RE = re.compile("""{{\[\[DONE\]\]}}""")
 
 def read(args):
     markdown = args.infile.read()
