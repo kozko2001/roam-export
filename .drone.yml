@@ -30,6 +30,7 @@ steps:
 - name: transform-anki
   image: python:3.8-alpine
   commands:
+  - apk add --no-cache git
   - git clone https://github.com/kozko2001/roam-to-anki.git roam-to-anki
   - python3 roam-to-anki/transform/anki.py -i ./zip -o decks.json
 
