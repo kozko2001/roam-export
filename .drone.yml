@@ -2,7 +2,7 @@ kind: pipeline
 name: default
 
 steps:
-- name: extract 
+- name: extract
   image: buildkite/puppeteer:v3.0.4
   environment:
     ROAM_USERNAME:
@@ -13,19 +13,26 @@ steps:
       from_secret: ROAM_DATABASE
   commands:
   - node export/index.js
+  - mkdir zip
+  - cp *.zip ./zip
+  - unzip *.zip;
 
-- name: transform
+- name: transform-blog
   image: python:3.8-alpine
   commands:
-  - mkdir zip
   - mkdir posts
-  - cp *.zip ./zip
   - cd ./zip;
-  - unzip *.zip;
   - pwd
   - pip3 install -r ../transform/requirements.txt
   - find . -name \*.md -exec python3 ../transform/blog.py -i {} -o ../posts/ \;
   - ls ../posts/*
+
+- name: transform-anki
+  image: python:3.8-alpine
+  commands:
+  - git clone https://github.com/kozko2001/roam-to-anki.git roam-to-anki
+  - python3 roam-to-anki/transform/anki.py -i ./zip -o decks.json
+
 - name: blog
   image: bitnami/git
   environment:
@@ -44,6 +51,7 @@ steps:
   - git config --global user.email "you@example.com"
   - git config --global user.name "Your Name"
   - cp posts/* blog/content/posts/
+  - cp decks.json blog/static/anki/decks.json
   - git -C blog/ add .
   - git -C blog/ status
   - git -C blog/ commit -m "add content from roam-export"
