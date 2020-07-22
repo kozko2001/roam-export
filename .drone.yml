@@ -13,13 +13,13 @@ steps:
       from_secret: ROAM_DATABASE
   commands:
   - node export/index.js
-  - mkdir zip
-  - cp *.zip ./zip
-  - unzip *.zip;
 
 - name: transform-blog
   image: python:3.8-alpine
   commands:
+  - mkdir zip
+  - cp *.zip ./zip
+  - unzip *.zip;
   - mkdir posts
   - cd ./zip;
   - pwd
