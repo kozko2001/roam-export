@@ -18,10 +18,10 @@ steps:
   image: python:3.8-alpine
   commands:
   - mkdir zip
-  - cp *.zip ./zip
-  - unzip *.zip;
   - mkdir posts
+  - cp *.zip ./zip
   - cd ./zip;
+  - unzip *.zip;
   - pwd
   - pip3 install -r ../transform/requirements.txt
   - find . -name \*.md -exec python3 ../transform/blog.py -i {} -o ../posts/ \;
