@@ -15,6 +15,7 @@ URL = 'https://roamresearch.com/#/app/' + process.env.ROAM_DATABASE;
       // because Docker’s default for /dev/shm is 64MB
       '--disable-dev-shm-usage'
     ],
+    headless: true,
   });
   const page = await browser.newPage();
 
@@ -38,9 +39,9 @@ URL = 'https://roamresearch.com/#/app/' + process.env.ROAM_DATABASE;
   });
 
 
-  
   await page.waitForFunction(() => document.getElementsByClassName("bp3-icon-more").length);
   await page.waitFor(4000);
+  await page.keyboard.press('Escape');
   await page.evaluate(() => {
     document.getElementsByClassName("bp3-icon-more")[0].click();
   });
