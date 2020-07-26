@@ -25,7 +25,8 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    - shell: bash
+    - name: export roam
+      shell: bash
       env:
         ROAM_USERNAME: ${{ secrets.ROAM_USERNAME }}
         ROAM_PASSWORD: ${{ secrets.ROAM_PASSWORD }}
@@ -38,6 +39,7 @@ jobs:
         unzip -o  *.zip -d ../zip | true
         ls ../zip/
 
-    - shell: bash
+    - name: transform to hugo markdown
+      shell: bash
       run: |
          ls ./zip
