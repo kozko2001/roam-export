@@ -51,7 +51,7 @@ jobs:
     - name: transform roam to anki cards
       shell: bash
       run: |
-        github clone https://github.com/kozko2001/roam-to-anki.git
+        git clone https://github.com/kozko2001/roam-to-anki.git
         python3 roam-to-anki/transform/anki.py -i ./zip -o decks.json
         ls .
               
