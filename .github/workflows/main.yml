@@ -48,6 +48,13 @@ jobs:
         cd zip
         find . -name \*.md -exec python3 ../transform/blog.py -i {} -o ../posts/ \;
         
+    - name: transform roam to anki cards
+      shell: bash
+      run: |
+        github clone https://github.com/kozko2001/roam-to-anki.git
+        python3 roam-to-anki/transform/anki.py -i ./zip -o decks.json
+        ls .
+              
     - name: push to my blog
       shell: bash
       env:
@@ -56,12 +63,10 @@ jobs:
         git config --global user.email "kozko2001@gmail.com"
         git config --global user.name "kozko2001"
         git clone "https://$API_TOKEN_GITHUB@github.com/kozko2001/blog-hugo.git" "blog"
-        echo "1"
         ls blog/
-        echo "2"
         cp posts/* blog/content/posts/
+        cp decks.json blog/static/anki/decks.json
         git -C blog/ add
-        echo "3"
         git -C blog/ status
         git -C blog/ commit -m "add content from roam-export"
         git -C blog/ push
