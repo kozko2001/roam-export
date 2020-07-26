@@ -35,8 +35,11 @@ jobs:
         mkdir zip
         cd export
         npm install
+        npm install -g npx
         node index.js
+        npx nunzip *.zip -d ../zip
         unzip -o  *.zip -d ../zip | true
+        echo "I AM SUCCESSFUL?"
         ls ../zip/
 
     - name: transform to hugo markdown
