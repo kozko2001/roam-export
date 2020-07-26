@@ -66,7 +66,7 @@ jobs:
         ls blog/
         cp posts/* blog/content/posts/
         cp decks.json blog/static/anki/decks.json
-        git -C blog/ add
+        git -C blog/ add .
         git -C blog/ status
         git -C blog/ commit -m "add content from roam-export"
         git -C blog/ push
