@@ -43,4 +43,12 @@ jobs:
     - name: transform to hugo markdown
       shell: bash
       run: |
-         ls ./zip
+        mkdir posts
+        pip3 install -r transform/requirements.txt
+        cd zip
+        find . -name \*.md -exec python3 ../transform/blog.py -i {} -o ../posts/ \;
+        
+    - name: push to my blog
+      shell: bash
+      run: |
+        ls posts/
