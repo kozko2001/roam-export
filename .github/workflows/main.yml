@@ -47,14 +47,14 @@ jobs:
         pip3 install -r transform/requirements.txt
         cd zip
         find . -name \*.md -exec python3 ../transform/blog.py -i {} -o ../posts/ \;
-        
+
     - name: transform roam to anki cards
       shell: bash
       run: |
         git clone https://github.com/kozko2001/roam-to-anki.git
         python3 roam-to-anki/transform/anki.py -i ./zip -o decks.json
         ls .
-              
+
     - name: push to my blog
       shell: bash
       env:
@@ -68,5 +68,4 @@ jobs:
         cp decks.json blog/static/anki/decks.json
         git -C blog/ add .
         git -C blog/ status
-        git -C blog/ commit --allow-empty -m "add content from roam-export"
-        git -C blog/ push
+        diff --cached --quiet -C blog/ || git -C blog/ commit  -m "add content from roam-export" && git -C blog/ push
