@@ -5,7 +5,7 @@ PASSWORD = process.env.ROAM_PASSWORD;
 
 URL = 'https://roamresearch.com/#/app/' + process.env.ROAM_DATABASE; 
 
-(async () => {
+const run = async () => {
   const browser = await puppeteer.launch({
     args: [
       // Required for Docker version of Puppeteer
@@ -56,4 +56,21 @@ URL = 'https://roamresearch.com/#/app/' + process.env.ROAM_DATABASE;
   await page.waitFor(4000);
 
   await browser.close();
+}
+
+const MAX_RETRIES=3;
+
+(async () => {
+  
+  for(let i=0; i< MAX_RETRIES; i++) {
+    try {
+      await run()
+      return;
+    } catch (e) {
+      console.error(`failed with ${e} attemp ${i} of ${MAX_RETRIES}`)
+    }
+  }
+
+  process.exit(1);
+  
 })();
