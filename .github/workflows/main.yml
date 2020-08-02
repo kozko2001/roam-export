@@ -68,4 +68,5 @@ jobs:
         cp decks.json blog/static/anki/decks.json
         git -C blog/ add .
         git -C blog/ status
-        git diff --cached --quiet -C blog/ || git -C blog/ commit  -m "add content from roam-export" && git -C blog/ push
+        git -C blog/ commit  -m "add content from roam-export"
+        git -C blog/ push
